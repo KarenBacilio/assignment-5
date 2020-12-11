@@ -8,24 +8,17 @@
  //@param {number} number2
  //@return {number} product
 
-/*Below asks the user to type in 2 numbers for the following multiplicaiton function
-I understand that prompt(); gives a string, so I added parseInt(); to change it to a number.
-Tired to put those variables in my parameter/inside function, but unsure how. 
-*/
-let userInput1 = prompt("Please type in a whole number (or integer).");
-console.log(typeof(userInput1));
-//console reads it gives out a string. as I thought
+//two prompts for the user to give you a number, parseInt to change prompt input from a string to a number
+let userInput1 = parseInt(prompt("Hello guest, we are  about to multiply two numbers. To begin, please type in a whole number (or integer), positive numbers only."));
 
-//the variable names are test1 as I am still figuring out if this will work or if I will offcially add it to my code.
-let test1 = parseInt(userInput1);
-console.log(typeof(test1));
-//and now console says it is now a number, great!
+  
+let userInput2 = parseInt(prompt("Thanks, now please give me a second whole numnber. Again positive numbers only. Please and Thank you."));
 
-let userInput2 = prompt("Thanks, now please give me a second whole number. Please and Thank you.")
-let test2 = parseInt(userInput2);
-
-
+// this if statement deals with if a user inputs a zero. 
+//because my code gives the correct answer only if the negative number is the first number not second.
+//so here I address it by the if statment
  const multiplication = (number1, number2) => {
+
   if(number1 === 0 || number2 === 0){
     return 0;
   }
@@ -35,7 +28,7 @@ let test2 = parseInt(userInput2);
   }
   return sum
 }
-const answer1 = multiplication()
+const answer1 = multiplication(userInput1,userInput2);
 console.log('answer1', answer1)
 
 const htmlTarget = document.getElementById('a-1')
@@ -53,11 +46,32 @@ htmlTarget.innerHTML = answer1
 
 //@param {string}
 //@return {character} => array of characters
-const vowels = ['a','e','i','o','u'];
-const consonants = ['b','c','d','f','g','h','j','k','l','m','n','p','q','r','s','t','v','w','x','y','z'];
+
 vowelOrConsonant = () => {
-  return
-}
+    //prompt to ask user for word input
+    let userInput = prompt("Type in a single word in all lowercase");
+   
+    //to check if vowel/con we will create an array with vowel only
+    let vowelCheck = ['a','e','i','o','u'];
+    let userVowels = [];
+    let userCons = [];
+    //now we want to make a loop to check each character of the user's string for vowels
+    for(let i = 0; i < userInput.length; i++){
+      if(vowelCheck.includes(userInput[i])){
+        userVowels.push(userInput[i]);
+      }else{
+        userCons.push(userInput[i]);
+      }
+    }
+    //ask user if they want vowels or cons first in prompt
+    let askPref = prompt("Would you like 'vowels' or 'consonants' first. Please type your choice in lowercase letters.");
+    if(askPref = "vowels"){
+      return userVowels.concat(userCons);
+     // if user had typed 'consonants' then you concat consonant array first then vowel array
+       }else{
+       return userCons.concat(userVowels);
+    }
+   }
 
 const answer2 = vowelOrConsonant()
 
@@ -68,15 +82,57 @@ htmlTarget2.innerHTML = answer2
 
 
 //------------------------ Question 3 ---------------------------
-//Now let's create a small game. The game consists in a player (ask the user for the name).
-//The player has 3 oportunities to guess a number. The number is a random number between 10 - 50.
-//If the player don't find the number, the program must displays an alert and stop the game, but if the player finds the number, then the program must show a congratulations message (alert) with the name of the player in upperCase letters and stop the game
-//You must have to store the player information in a 'player' object. The Player object contains the following Properties:
-// {string} name, {number} lives, {numbers} fail_numbers[]
-//where: name, saves the name of the player. Lives, represents the remaining oportunities each time the player fails. Fail_numbers, is an array of numbers that stores the fail numbers the player has used
+/* Now let's create a small game. The game consists in a player (ask the user for the name).
+The player has 3 oportunities to guess a number. The number is a random number between 10 - 50.
+If the player don't find the number, the program must displays an alert and stop the game,
+but if the player finds the number, then the program must show a congratulations message (alert)
+with the name of the player in upperCase letters and stop the game
+You must have to store the player information in a 'player' object.
+The Player object contains the following Properties:
+ {string} name, {number} lives, {numbers} fail_numbers[]
+where: name, saves the name of the player. Lives, represents the remaining oportunities
+each time the player fails. Fail_numbers, is an array of numbers that stores the fail numbers
+the player has used */
 
-//@return {string} win / gameOver => the string that says if the user wasted the three oportunities showing the fails numbers or the name if the player wins
+//@return {string} win / gameOver => the string that says if the user wasted
+//the three oportunities showing the fails numbers or the name if the player wins
 guessTheNumber  = () => {
+//ask for player name
+let playerName = prompt("Hello player, now we are about to play a random number game. Where you guess my number between 10-50. Good luck! Before we begin, can you please type in your name?");
+
+//make a random number between 10-50
+var randomNumBot = Math.floor(Math.random() * 40) + 10;
+//if curious you may see the random number in the console
+console.log(randomNumBot);
+
+//need object to store player game information here
+let playerStats = {
+  name: "",
+  gameTries: 3,
+  fail_number: [],
+};
+
+//the code below will input the player name into the stats object
+playerStats["name"] = playerName;
+
+/*here we will have a loop for the player to guess the name until they have either guessed the random number or have made 3 attempts and recieve LOSER alert*/
+
+//plan in future to include playerStats.lives as part of the loop. for now this code works. thanks for understanding
+for(let i = 3; i > 0; i--){
+  let playerGuess = parseInt(prompt(`${playerStats["name"]}, you have ${playerStats["gameTries"]} tries to guess my number. Guess my number between 10 and 50:`));
+  if(playerGuess == randomNumBot){
+    alert(`Congrats,${playerStats["name"]} you successfully guessed my number! My random number was indeed ${randomNumBot}. Thanks for playing!`);
+  }`);
+    break;
+  }else if(playerGuess !== randomNumBot){
+    //include way to decrement gameTries
+    playerStats.fail_number.push(playerGuess);
+    playerStats["gameTries"]--;
+    console.log(playerStats);
+  }if(playerStats.gameTries == 0){
+    alert(`Sorry, ${playerStats.name}, you have lost the game. The numbers you tried were ${playerStats.fail_number.join(', and ')}.  My random number was ${randomNumBot}. Thanks for playing!`);
+  }
+}  
   return
 }
 
